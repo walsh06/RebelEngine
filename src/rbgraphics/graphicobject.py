@@ -2,15 +2,21 @@ import Tkinter as tk
 
 from graphics import _root
 
-class Image(object):
-	def __init__(self, image, x = 0, y = 0):
-		self._img = tk.PhotoImage(file=image, master=_root)
-		self._id = None
-		self.setOrigin(x, y)
+class GraphicObject(object):
 
-	def setOrigin(self, x, y):
+	def __init__(self, x=0, y=0):
+		setObjectPos(x, y)
+
+	def setObjectPos(self, x, y):
 		self._x = x
 		self._y = y
+
+class rbImage(GraphicObject):
+
+	def __init__(self, image, x = 0, y = 0):
+		super(rbImage, self).__init__(x, y)
+		self._img = tk.PhotoImage(file=image, master=_root)
+		self._id = None
 
 	def draw(self, canvas, x, y):
 		if self._id == None:	
@@ -20,19 +26,18 @@ class Image(object):
 			dx = x - self._x
 			dy = y - self._y
 			canvas.move(self._id, dx, dy)
-			self.setOrigin(x, y)
+			self.setObjectPos(x, y)
 		_root.update()
 
 	def undraw(self):
 		self._id = None
 
-class Text(object):
+class rbText(GraphicObject):
 
 	def __init__(self, text, x, y):
+		super(rbText, self).__init__(x, y)
 		self._id = None
 		self._text = text
-		self._x = x
-		self._y = y
 		self._textChange = False
 
 	def setText(self, text):
