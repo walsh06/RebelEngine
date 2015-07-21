@@ -5,7 +5,7 @@ from graphics import _root
 class GraphicObject(object):
 
 	def __init__(self, x=0, y=0):
-		setObjectPos(x, y)
+		self.setObjectPos(x, y)
 
 	def setObjectPos(self, x, y):
 		self._x = x

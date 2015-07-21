@@ -6,4 +6,4 @@ class rbGame(object):
 		self._updateRate = 0.03
 
 	def update(self):
-		time.sleep(0.03)
+		time.sleep(self._updateRate)
