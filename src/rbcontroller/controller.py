@@ -1,4 +1,4 @@
-class Controller(object):
+class BaseController(object):
 
 	def __init__(self):
 		self._keyMap = {"left":None,
