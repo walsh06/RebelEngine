@@ -6,6 +6,7 @@ from rbgraphics.graphics import Graphics
 from rbgraphics.graphicsobjects import rbImage
 from rbbase.rbgame import rbGame
 
+
 class TestGame(rbGame):
 
 	def __init__(self):
@@ -30,7 +31,6 @@ class TestGame(rbGame):
 
 	def quit(self):
 		self._running = False
-		
 
 
 test = TestGame()
