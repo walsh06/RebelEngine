@@ -17,6 +17,7 @@ class Graphics(tk.Canvas):
 		self.bind_all("<Key>", self._onKeyPress)
 		_root.update()
 		self._images = []
+		self._controller = None
 
 	def close(self):
 		"""Close the window"""
@@ -42,7 +43,8 @@ class Graphics(tk.Canvas):
 		self.lastKey = ""
 	
 	def _onKeyPress(self, event):
-		self.lastKey = event.keysym
+		if self._controller:
+			self._controller._pressKey(event.keysym)
 
 	def draw(self, image, x, y):
 		image.draw(self, x, y)
@@ -58,3 +60,6 @@ class Graphics(tk.Canvas):
 
 	def endDrawing(self):
 		pass
+
+	def registerController(self, controller):
+		self._controller = controller
