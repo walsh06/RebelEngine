@@ -3,6 +3,8 @@ class BaseController(object):
 	def __init__(self):
 		self._keyMap = {"left":None,
 						"right": None,
+						"up": None,
+						"down": None,
 						"space": None}
 
 	def _pressKey(self, key):
