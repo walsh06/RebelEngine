@@ -51,7 +51,6 @@ class Graphics(tk.Canvas):
 
 	def remove(self, image):
 		self.delete(image._id)
-		image.undraw()
 		_root.update()
 
 	def startDrawing(self):
