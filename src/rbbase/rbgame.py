@@ -7,7 +7,7 @@ sys.path.append(os.path.join(".."))
 from rbcontroller.controller import BaseController
 from rbgraphics.graphics import Graphics
 
-class rbGame(object):
+class RBGame(object):
 
 	def __init__(self):
 		self._updateRate = 0.03
