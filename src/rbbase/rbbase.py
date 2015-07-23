@@ -3,10 +3,11 @@ class RBBaseGameObject(object):
 	def __init__(self):
 		pass
 
+
 class RB2DPosition(object):
 
 	def __init__(self, x, y):
-		setPos(x, y)
+		self.setPos(x, y)
 
 	def setPos(self, x, y):
 		self._x = x
