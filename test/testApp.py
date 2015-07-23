@@ -20,9 +20,6 @@ class TestPlayer(RBPlayer):
 	def moveRight(self):
 		self.setPos(self._posX + 1, self._posY)
 
-	def draw(self, graphics):
-		graphics.draw(self._img, self._posX, self._posY)
-
 
 class TestGame(RBGame):
 
