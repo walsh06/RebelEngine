@@ -1,4 +1,4 @@
-from gameobject import RBBaseGameObject
+from rbbase import RBBaseGameObject
 
 
 class RBPlayer(RBBaseGameObject):
