@@ -18,3 +18,7 @@ class RB2DPosition(object):
 
 	def getY(self):
 		return self._y
+
+	def movePos(self, x, y):
+		self._x += x
+		self._y += y
