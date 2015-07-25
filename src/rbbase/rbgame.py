@@ -22,8 +22,5 @@ class RBGame(object):
 			self._controller = BaseController()
 			self._graphics.registerController(self._controller)
 
-		return self._controller
-
 	def initGraphics(self, width, height):
 		self._graphics = Graphics(width, height)
-		return self._graphics
