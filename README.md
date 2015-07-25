@@ -5,7 +5,6 @@ The Rebel Engine is a basic python game framework/engine for 2D games. The frame
 If you have any questions message or email me at liammail06@gmail.com
 
 ## Current Features
-==================================
 
 - Graphics
 - Sound
