@@ -25,8 +25,10 @@ class TestGame(RBGame):
 
 	def __init__(self):
 		super(TestGame, self).__init__()
-		self.testGraphics = self.initGraphics(200, 200)
-		self.testController = self.initController()
+		self.initGraphics(200, 200)
+		self.testGraphics = self._graphics
+		self.initController()
+		self.testController = self._controller
 		self.testController.registerKeyFunction("space", self.quit)
 		self.testPlayer = TestPlayer(0, 0, "ship.png")
 		self.testController.registerKeyFunction("Left", self.testPlayer.moveLeft)
