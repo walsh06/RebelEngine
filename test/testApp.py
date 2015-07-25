@@ -15,10 +15,10 @@ class TestPlayer(RBPlayer):
 		self._img = RBImage(img)
 
 	def moveLeft(self):
-		self.setPos(self._posX - 1, self._posY)
+		self._pos.movePos(-1, 0)
 
 	def moveRight(self):
-		self.setPos(self._posX + 1, self._posY)
+		self._pos.movePos(1, 0)
 
 
 class TestGame(RBGame):
