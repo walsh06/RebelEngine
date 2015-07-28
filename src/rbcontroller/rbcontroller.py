@@ -5,7 +5,8 @@ class RBBaseController(object):
                         "right": None,
                         "up": None,
                         "down": None,
-                        "space": None}
+                        "space": None,
+                        "q": None}
 
     def _pressKey(self, key):
         if key.lower() in self._keyMap and self._keyMap[key.lower()] is not None:
