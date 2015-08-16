@@ -5,12 +5,11 @@ from graphics import _root
 
 class RBGraphicObject(object):
 
-    def __init__(self, x=0, y=0):
-        self.setObjectPos(x, y)
+    def __init__(self, pos):
+        self._pos = pos 
 
     def setObjectPos(self, x, y):
-        self._x = x
-        self._y = y
+        self._pos.setPos(x, y)
 
     def undraw(self, canvas):
         canvas.remove(self)
@@ -19,8 +18,8 @@ class RBGraphicObject(object):
 
 class RBImage(RBGraphicObject):
 
-    def __init__(self, image, x=0, y=0):
-        super(RBImage, self).__init__(x, y)
+    def __init__(self, image, pos):
+        super(RBImage, self).__init__(pos)
         self._img = tk.PhotoImage(file=image, master=_root)
         self._id = None
 
@@ -29,17 +28,17 @@ class RBImage(RBGraphicObject):
             self._id = canvas.create_image(x, y, image=self._img)
             canvas.update()
         else:
-            dx = x - self._x
-            dy = y - self._y
+            dx = x - self._pos.getX()
+            dy = y - self._pos.getY()
             canvas.move(self._id, dx, dy)
-            self.setObjectPos(x, y)
+        self.setObjectPos(x, y)
         _root.update()
 
 
 class RBText(RBGraphicObject):
 
-    def __init__(self, text, x, y):
-        super(RBText, self).__init__(x, y)
+    def __init__(self, text, pos):
+        super(RBText, self).__init__(pos)
         self._id = None
         self._text = text
         self._textChange = False
@@ -50,13 +49,13 @@ class RBText(RBGraphicObject):
 
     def draw(self, canvas):
         if self._id is None:
-            self._id = canvas.create_text(self._x,
-                                          self._y,
+            self._id = canvas.create_text(self._pos.getX(),
+                                          self._pos.getY(),
                                           {"text": self._text})
         elif self._textChange is True:
             canvas.delete(self._id)
-            self._id = canvas.create_text(self._x,
-                                          self._y,
+            self._id = canvas.create_text(self._pos.getX(),
+                                          self._pos.getY(),
                                           {"text": self._text})
             self._textChange = False
         _root.update()

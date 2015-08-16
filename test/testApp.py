@@ -6,13 +6,13 @@ from rbgraphics.rbgraphics import RBGraphics
 from rbgraphics.rbgraphicsobjects import RBImage, RBText
 from rbbase.rbgame import RBGame
 from rbbase.rbplayer import RBPlayer
-
+from rbbase.rbbase import RB2DPosition
 
 class TestPlayer(RBPlayer):
 
     def __init__(self, x, y, img):
         super(TestPlayer, self).__init__(x, y)
-        self._img = RBImage(img)
+        self._img = RBImage(img, RB2DPosition(x, y))
 
     def moveLeft(self):
         self._pos.movePos(-1, 0)
@@ -33,8 +33,8 @@ class TestGame(RBGame):
         self.testPlayer = TestPlayer(0, 0, "ship.png")
         self.testController.registerKeyFunction("Left", self.testPlayer.moveLeft)
         self.testController.registerKeyFunction("Right", self.testPlayer.moveRight)
-        self.testImage = RBImage("ship.png", 100, 100)
-        self.testText = RBText("SHIP", 100, 50)
+        self.testImage = RBImage("ship.png", RB2DPosition(100, 100))
+        self.testText = RBText("SHIP", RB2DPosition(100, 50))
         self._running = True
 
     def update(self):
