@@ -4,16 +4,19 @@ class RBCollisionObject(object):
 
 class RBBoundingBox(RBCollisionObject):
 
-    def __init__(self, x, y, w, h):
+    def __init__(self, pos, w, h):
         self._w = 0
         self._h = 0
-        self.setPosition(x, y)
+        self._pos = pos
         self.setDimensions(w, h)
         self._setBounds()
 
     def setPosition(self, x, y):
-        self._x = x
-        self._y = y
+        self._pos.setPos(x, y)
+        self._setBounds()
+
+    def setPosition(self, pos):
+        self._pos = pos
         self._setBounds()
 
     def setDimensions(self, w, h):
@@ -22,10 +25,10 @@ class RBBoundingBox(RBCollisionObject):
         self._setBounds()
 
     def _setBounds(self):
-        self._left = self._x
-        self._right = self._x + self._w
-        self._top = self._y
-        self._bottom = self._y + self._h
+        self._left = self._pos.getX()
+        self._right = self._pos.getX() + self._w
+        self._top = self._pos.getY()
+        self._bottom = self._pos.getY() + self._h
 
     def collideWithBox(self, box):
         return not(self._left > box._right or self._right < box._left
