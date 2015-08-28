@@ -5,15 +5,16 @@ sys.path.append(os.path.join("..", "src"))
 
 from rbbase.rbgame import RBGame
 from rbsound.rbsound import RBSound, RBTempSound
-from rbgraphics.rbgraphicsobjects import RBImage, RBText
+from rbgraphics.rbgraphicsobjects import RBText
 from rbbase.rbbase import RB2DPosition
+
 
 class TestGame(RBGame):
 
     def __init__(self):
         super(TestGame, self).__init__()
         self.testSound = RBSound("test.wav")
-        self.initGraphics(100,100)
+        self.initGraphics(100, 100)
         self.testGraphics = self._graphics
         self.initController()
         self.testController = self._controller
@@ -31,7 +32,7 @@ class TestGame(RBGame):
             self.testText.draw(self.testGraphics)
 
     def playSound(self):
-        testSound = RBTempSound("test.wav")
+        tempSound = RBTempSound("test.wav")
 
     def quit(self):
         self._running = False

@@ -1,6 +1,6 @@
 import pyaudio
 import wave
-import time
+
 
 class RBSound(object):
 
