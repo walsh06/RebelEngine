@@ -1,6 +1,6 @@
 import Tkinter as tk
 
-from graphics import _root
+from rbgraphics import _root
 
 
 class RBGraphicObject(object):

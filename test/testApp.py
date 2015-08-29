@@ -29,7 +29,7 @@ class TestGame(RBGame):
         self.testGraphics = self._graphics
         self.initController()
         self.testController = self._controller
-        self.testController.registerKeyFunction("space", self.quit)
+        self.testController.registerKeyFunction("q", self.quit)
         self.testPlayer = TestPlayer(0, 0, "ship.png")
         self.testController.registerKeyFunction("Left", self.testPlayer.moveLeft)
         self.testController.registerKeyFunction("Right", self.testPlayer.moveRight)
