@@ -14,10 +14,8 @@ class RBVector(object):
         self._y = y
 
     def calculateVector(self, magnitude, angle):
-        print angle, radians(angle)
         self._x = magnitude * cos(radians(angle))
         self._y = magnitude * sin(radians(angle))
-        print self._x, self._y
 
     def getX(self):
         return self._x
