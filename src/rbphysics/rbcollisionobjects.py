@@ -33,3 +33,16 @@ class RBBoundingBox(RBCollisionObject):
     def collideWithBox(self, box):
         return not(self._left > box._right or self._right < box._left
                    or self._top > box._bottom or self._bottom < box._top)
+
+
+class RBBoundingCircle(RBCollisionObject):
+
+    def __init__(self, centre, radius):
+        self._centre = centre
+        self._radius = radius
+
+    def setCentre(self, centre):
+        self._centre = centre
+
+    def setRadius(self, radius):
+        self._radius = radius
