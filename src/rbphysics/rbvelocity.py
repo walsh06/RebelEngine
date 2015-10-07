@@ -62,3 +62,4 @@ class RBVelocity(object):
             self._velocity._y *= -1
         elif direction.lower() == "left" or direction.lower() == "right":
             self._velocity._x *= -1
+
