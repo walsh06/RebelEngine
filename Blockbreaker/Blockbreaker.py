@@ -11,7 +11,8 @@ from rbbase.rbbase import RB2DPosition
 from rbgraphics.rbgraphicsobjects import RBImage, RBText, RBCircle, RBRectangle
 from rbai.rbai import RBAI 
 from rbai.rbbehaviour import RBMoveDown
-from rbphysics.rbcollisionobjects import RBBoundingBox
+from rbphysics.rbcollisionobjects import RBBoundingBox, RBBoundingCircle
+from rbphysics.rbcollision import RBCollision
 from rbphysics.rbvelocity import RBVelocity
 from rbsound.rbsound import RBSound
 SCR_HEIGHT = 400
@@ -22,6 +23,7 @@ class Block(object):
     def __init__(self, x, y, colour):
         self._rec = RBRectangle(RB2DPosition(x, y), 20, 50, fill=colour)
         self._pos = RB2DPosition(x, y)
+        self._box = RBBoundingBox(self._pos, 20, 50)
 
     def draw(self, graphics):
         self._rec.draw(graphics, self._pos.getX(), self._pos.getY())
@@ -31,17 +33,27 @@ class BlockManager(object):
     def __init__(self):
         self._blocks = []
         self._colours = ["red", "blue", "green", "yellow"]
+        self._collision = RBCollision()
+        self._removedBlocks = []
         for x in range(0, 8):
             for y in range(0, 4):
                 self._blocks.append(Block(x * 50, y * 20, self._colours[randint(0, 3)]))
     
     def update(self, ball):
-    for block in self._blocks:
-        pass
+        for block in self._blocks:
+            if self._collision.collideCircleToRectangle(ball._circle, block._box):
+                print ball._circle._centre.getX(), ball._circle._centre.getY()
+                print block._box._pos.getX(), block._box._pos.getY()
+                self._blocks.remove(block)
+                self._removedBlocks.append(block)
+                ball._v.changeAngle(90)
 
     def draw(self, graphics):
         for block in self._blocks:
             block.draw(graphics)
+
+        for block in self._removedBlocks:
+            block._rec.undraw(graphics)
 
 class Ball(object):
     
@@ -49,6 +61,7 @@ class Ball(object):
         self._ball = RBCircle(RB2DPosition(200, 350), 5, "red", "red")
         self._pos = RB2DPosition(200, 350)
         self._v = RBVelocity(3, -90)
+        self._circle = RBBoundingCircle(self._pos, 5)
 
     def update(self):
         if self._pos.getX() < 0 or self._pos.getX() > SCR_WIDTH:
@@ -56,6 +69,7 @@ class Ball(object):
         elif self._pos.getY() < 0 or self._pos.getY() > SCR_HEIGHT:
             self._v.changeAngle(90)
         self._pos.movePos(self._v.getVelocityX(), self._v.getVelocityY())
+        self._circle.setCentre(self._pos)
 
     def draw(self, graphics):
         self._ball.draw(graphics, self._pos.getX(), self._pos.getY())
@@ -104,6 +118,7 @@ class BlockBreaker(RBGame):
             self._ball.update()
             self._ball.draw(self._graphics)
 
+            self._blockManager.update(self._ball)
             self._blockManager.draw(self._graphics)
 
     def quit(self):
