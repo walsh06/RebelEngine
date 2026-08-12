@@ -12,8 +12,11 @@ class RBGraphicObject(object):
         self._drawnX = None
         self._drawnY = None
 
-    def setObjectPos(self, x, y):
+    def setPosXY(self, x, y):
         self._pos.setPos(x, y)
+
+    def setPos(self, pos):
+        self._pos = pos
 
     def undraw(self, canvas):
         canvas.remove(self)
@@ -21,7 +24,7 @@ class RBGraphicObject(object):
 
     def draw(self, canvas, x=None, y=None):
         if x is not None and y is not None:
-            self.setObjectPos(x, y)
+            self.setPosXY(x, y)
 
         posX = self._pos.getX()
         posY = self._pos.getY()
@@ -83,10 +86,10 @@ class RBGraphicsShape(RBGraphicObject):
         self._fill = fill
         self._recreate = True
     
-class RBCircle(RBGraphicsShape):
+class RBGraphicCircle(RBGraphicsShape):
 
     def __init__(self, centre, radius, colour="black", fill=""):
-        super(RBCircle, self).__init__(centre, colour, fill)
+        super(RBGraphicCircle, self).__init__(centre, colour, fill)
         self._radius = radius
 
     def create(self, canvas, x, y):
@@ -99,10 +102,10 @@ class RBCircle(RBGraphicsShape):
                                         "outline": self._colour})
 
 
-class RBRectangle(RBGraphicsShape):
+class RBGraphicRectangle(RBGraphicsShape):
 
     def __init__(self, pos, height, width, colour="black", fill=""):
-        super(RBRectangle, self).__init__(pos, colour, fill)
+        super(RBGraphicRectangle, self).__init__(pos, colour, fill)
         self._height = height
         self._width = width
 

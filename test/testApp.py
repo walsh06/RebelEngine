@@ -49,10 +49,8 @@ class TestGame(RBGame):
         self.testText.draw(self.testGraphics)
         if self.count == 30:
             self.testImage.undraw(self.testGraphics)
-            self.testText.undraw(self.testGraphics)
         elif self.count < 30:
             self.testImage.draw(self.testGraphics, 100, 100)
-            self.testText.draw(self.testGraphics)
 
     def quit(self):
         self._running = False
