@@ -1,4 +1,5 @@
-import Tkinter as tk
+import tkinter as tk
+
 _root = tk.Tk()
 _root.withdraw()
 

@@ -1,4 +1,4 @@
-from rbbase import RBBaseGameObject, RB2DPosition
+from rbbase.rbbase import RBBaseGameObject, RB2DPosition
 
 
 class RBPlayer(RBBaseGameObject):

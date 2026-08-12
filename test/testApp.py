@@ -1,7 +1,9 @@
 import sys
-import os
+from pathlib import Path
 
-sys.path.append(os.path.join("..", "src"))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
 from rbgraphics.rbgraphics import RBGraphics
 from rbgraphics.rbgraphicsobjects import RBImage, RBText
 from rbbase.rbgame import RBGame

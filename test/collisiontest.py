@@ -1,7 +1,8 @@
 import sys
-import os
+from pathlib import Path
 
-sys.path.append(os.path.join("..", "src"))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
 
 from rbphysics.rbcollisionobjects import RBBoundingBox, RBBoundingCircle
 from rbphysics.rbcollision import RBCollision
@@ -14,9 +15,9 @@ class CollisionTest(object):
         boxOne = RBBoundingBox(RB2DPosition(0, 0), 10, 10)
         boxTwo = RBBoundingBox(RB2DPosition(11, 11), 10, 10)
         boxThree = RBBoundingBox(RB2DPosition(1, 1), 10, 10)
-        print "> Testing Rectangle"
-        print boxOne.collideWithBox(boxTwo)
-        print boxTwo.collideWithBox(boxThree)
+        print("> Testing Rectangle")
+        print(boxOne.collideWithBox(boxTwo))
+        print(boxTwo.collideWithBox(boxThree))
 
     def testCircle(self):
         col = RBCollision()
@@ -24,10 +25,10 @@ class CollisionTest(object):
         r1 = RBBoundingBox(RB2DPosition(12, 12), 10, 10)
         r2 = RBBoundingBox(RB2DPosition(5, 5), 10, 10)
         r3 = RBBoundingBox(RB2DPosition(20, 20), 10, 10)
-        print "> Testing Circle"
-        print col.collideCircleToRectangle(c, r1)
-        print col.collideCircleToRectangle(c, r2)
-        print col.collideCircleToRectangle(c, r3)
+        print("> Testing Circle")
+        print(col.collideCircleToRectangle(c, r1))
+        print(col.collideCircleToRectangle(c, r2))
+        print(col.collideCircleToRectangle(c, r3))
 
 test = CollisionTest()
 test.testBoxToBox()

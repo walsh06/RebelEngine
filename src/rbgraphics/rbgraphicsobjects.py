@@ -1,6 +1,6 @@
-import Tkinter as tk
+import tkinter as tk
 
-from rbgraphics import _root
+from rbgraphics.rbgraphics import _root
 
 
 class RBGraphicObject(object):
