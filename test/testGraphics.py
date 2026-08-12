@@ -21,12 +21,14 @@ class TestGame(RBGame):
         self.testController = self._controller
         self.testController.registerKeyFunction("q", self.quit)
         self.testText = RBText("TEST", RB2DPosition(100, 150))
+        self.countText = RBText("COUNT", RB2DPosition(100, 200))
         self.testCircle = RBGraphicCircle(RB2DPosition(20, 20), 10, "red", "red")
         self.testRec = RBRectangle(RB2DPosition(50, 50), 10, 20, "black", "")
         self.scene = RBScene(self._graphics)
         self.scene.addObject(self.testCircle)
         self.scene.addObject(self.testRec)
         self.scene.addObject(self.testText)
+        self.scene.addObject(self.countText)
         self.x = 20
         self.y = 20
         self.count = 0
@@ -36,7 +38,8 @@ class TestGame(RBGame):
         self.y += 1
 
         self.count += 1
-
+        self.countText.setText(f"COUNT: {self.count}")
+        
         if self.count > 20:
             self.testRec.setColour("blue")
             self.testRec.setFill("blue")

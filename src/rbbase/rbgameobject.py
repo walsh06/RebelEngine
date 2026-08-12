@@ -3,7 +3,7 @@ import os
 
 sys.path.append(os.path.join(".."))
 
-from rbgraphics.rbgraphicsobjects import RBGraphicRectangle
+from rbgraphics.rbgraphicsobjects import RBGraphicCircle, RBGraphicRectangle
 
 class RBGameObject(object):
     def __init__(self, pos, graphic=None, collider=None, behaviours=[]):
@@ -112,6 +112,19 @@ class RBRectangle(RBGameObject):
         super(RBRectangle, self).__init__(pos, graphic)
         self._width = width
         self._height = height
+
+    def setColour(self, colour):
+        self._graphic.setColour(colour)
+
+    def setFill(self, fill):
+        self._graphic.setFill(fill)
+
+class RBCircle(RBGameObject):
+    
+    def __init__(self, centre, radius, colour="black", fill=""):
+        graphic = RBGraphicCircle(centre, radius, colour, fill)
+        super(RBCircle, self).__init__(centre, graphic)
+        self._radius = radius
 
     def setColour(self, colour):
         self._graphic.setColour(colour)
