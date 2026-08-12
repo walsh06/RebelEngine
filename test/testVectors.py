@@ -40,19 +40,17 @@ class TestGame(RBGame):
         self.initController()
         self.testController = self._controller
         self.testController.registerKeyFunction("q", self.quit)
-        self._running = True
         self.ball = Ball("ball.png")
 
-    def update(self):
-        count = 0
-        while self._running:
-            super(TestGame, self).update()
-            self.ball.update()
-            self.ball.draw(self.testGraphics)
+    def onUpdate(self):
+        self.ball.update()
+
+    def onDraw(self):
+        self.ball.draw(self.testGraphics)
 
     def quit(self):
         self._running = False
 
 if __name__ == "__main__":
     test = TestGame()
-    test.update()
+    test.run()

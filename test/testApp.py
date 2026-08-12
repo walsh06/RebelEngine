@@ -38,26 +38,25 @@ class TestGame(RBGame):
         self.testImage = RBImage("ship.png", RB2DPosition(100, 100))
         self.testText = RBText("SHIP", RB2DPosition(100, 50))
         self._running = True
+        self.count = 0
+        self.testText = RBText(self.count, RB2DPosition(100, 150))
 
-    def update(self):
-        count = 0
-        while self._running:
-            super(TestGame, self).update()
+    def onUpdate(self):
+        self.count += 1
 
-            self.testPlayer.draw(self.testGraphics)
-
-            count += 1
-
-            if count == 30:
-                self.testImage.undraw(self.testGraphics)
-                self.testText.undraw(self.testGraphics)
-            elif count < 30:
-                self.testImage.draw(self.testGraphics, 100, 100)
-                self.testText.draw(self.testGraphics)
+    def onDraw(self):
+        self.testText.setText(self.count)
+        self.testText.draw(self.testGraphics)
+        if self.count == 30:
+            self.testImage.undraw(self.testGraphics)
+            self.testText.undraw(self.testGraphics)
+        elif self.count < 30:
+            self.testImage.draw(self.testGraphics, 100, 100)
+            self.testText.draw(self.testGraphics)
 
     def quit(self):
         self._running = False
 
 
 test = TestGame()
-test.update()
+test.run()

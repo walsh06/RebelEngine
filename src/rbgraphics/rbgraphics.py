@@ -3,6 +3,9 @@ import tkinter as tk
 _root = tk.Tk()
 _root.withdraw()
 
+def flush():
+    _root.update()
+
 
 class RBGraphics(tk.Canvas):
     def __init__(self, width, height):
@@ -13,7 +16,6 @@ class RBGraphics(tk.Canvas):
         tk.Canvas.__init__(self, master, width=width, height=height)
         self.pack()
         self.closed = False
-        self.autoflush = True
         self.lastKey = None
         self.bind_all("<Key>", self._onKeyPress)
         _root.update()
@@ -26,14 +28,20 @@ class RBGraphics(tk.Canvas):
             return
         self.closed = True
         self.master.destroy()
-        self.__autoflush()
-
-    def __autoflush(self):
-        if self.autoflush:
-            _root.update()
+        flush()
 
     def isClosed(self):
         return False
+
+    def flushEvents(self):
+        if self.closed:
+            return False
+        try:
+            _root.update()
+        except tk.TclError:
+            self.closed = True
+            return False
+        return True
 
     def checkKey(self):
         """Return last key pressed or None if no key pressed since last call"""

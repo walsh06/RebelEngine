@@ -21,27 +21,21 @@ class TestGame(RBGame):
         self.testText = RBText("TEST", RB2DPosition(100, 150))
         self.testCircle = RBCircle(RB2DPosition(20, 20), 10, "red", "red")
         self.testRec = RBRectangle(RB2DPosition(50, 50), 10, 20)
+        self.x = 20
+        self.y = 20
 
-        self._running = True
+    def onUpdate(self):
+        self.x += 1
+        self.y += 1
 
-    def update(self):
-        count = 0
-        x = 20
-        y = 20
-        while self._running:
-            super(TestGame, self).update()
-            count += 1
-
-            self.testText.draw(self.testGraphics)
-            x += 1
-            y += 1
-            self.testCircle.draw(self.testGraphics, x, y)
-
-            self.testRec.draw(self.testGraphics, x + 30, y + 30)
+    def onDraw(self):
+        self.testText.draw(self.testGraphics)
+        self.testCircle.draw(self.testGraphics, self.x, self.y)
+        self.testRec.draw(self.testGraphics, self.x + 30, self.y + 30)
 
     def quit(self):
         self._running = False
 
 if __name__ == "__main__":
     test = TestGame()
-    test.update()
+    test.run()
