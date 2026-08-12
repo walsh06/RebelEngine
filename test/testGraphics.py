@@ -13,7 +13,7 @@ class TestGame(RBGame):
 
     def __init__(self):
         super(TestGame, self).__init__()
-        self.initGraphics(100, 100)
+        self.initGraphics(300, 300)
         self.testGraphics = self._graphics
         self.initController()
         self.testController = self._controller
@@ -23,10 +23,17 @@ class TestGame(RBGame):
         self.testRec = RBRectangle(RB2DPosition(50, 50), 10, 20)
         self.x = 20
         self.y = 20
+        self.count = 0
 
     def onUpdate(self):
         self.x += 1
         self.y += 1
+
+        self.count += 1
+
+        if self.count > 20:
+            self.testRec.setColour("blue")
+            self.testRec.setFill("blue")
 
     def onDraw(self):
         self.testText.draw(self.testGraphics)

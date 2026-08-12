@@ -12,6 +12,15 @@
             "program": "${workspaceFolder}/test/testApp.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}/test"
+        },
+        
+        {
+            "name": "Test Graphics",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/test/testGraphics.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/test"
         }
     ]
 }
