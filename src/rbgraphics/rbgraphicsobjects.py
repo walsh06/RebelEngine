@@ -7,6 +7,10 @@ class RBGraphicObject(object):
 
     def __init__(self, pos):
         self._pos = pos
+        self._recreate = True
+        self._id = None
+        self._drawnX = None
+        self._drawnY = None
 
     def setObjectPos(self, x, y):
         self._pos.setPos(x, y)
@@ -15,25 +19,40 @@ class RBGraphicObject(object):
         canvas.remove(self)
         self._id = None
 
+    def draw(self, canvas, x=None, y=None):
+        if x is not None and y is not None:
+            self.setObjectPos(x, y)
+
+        posX = self._pos.getX()
+        posY = self._pos.getY()
+        if self._id is None or self._recreate:
+            if self._id is not None:
+                canvas.delete(self._id)
+            self._id = self.create(canvas, posX, posY)
+            self._recreate = False
+        elif self._drawnX != posX or self._drawnY != posY:
+            canvas.move(self._id, posX - self._drawnX, posY - self._drawnY)
+        self._drawnX = posX
+        self._drawnY = posY
+
+    def undraw(self, canvas):
+        if self._id is not None:
+            canvas.delete(self._id)
+            self._id = None
+
+    def create(self, canvas, x, y):
+        pass  # This method should be implemented in subclasses
+
 
 class RBImage(RBGraphicObject):
 
     def __init__(self, image, pos):
         super(RBImage, self).__init__(pos)
         self._img = tk.PhotoImage(file=image, master=_root)
-        self._id = None
 
-    def draw(self, canvas, x, y):
-        if self._id is None:
-            self._id = canvas.create_image(x, y, image=self._img)
-            canvas.update()
-        else:
-            dx = x - self._pos.getX()
-            dy = y - self._pos.getY()
-            canvas.move(self._id, dx, dy)
-        self.setObjectPos(x, y)
-        _root.update()
-
+    def create(self, canvas, x, y):
+        return canvas.create_image(x, y, image=self._img)
+            
 
 class RBText(RBGraphicObject):
 
@@ -41,78 +60,57 @@ class RBText(RBGraphicObject):
         super(RBText, self).__init__(pos)
         self._id = None
         self._text = text
-        self._textChange = False
 
     def setText(self, text):
         self._text = text
-        self._textChange = True
+        self._recreate = True
 
-    def draw(self, canvas):
-        if self._id is None:
-            self._id = canvas.create_text(self._pos.getX(),
-                                          self._pos.getY(),
-                                          {"text": self._text})
-        elif self._textChange is True:
-            canvas.delete(self._id)
-            self._id = canvas.create_text(self._pos.getX(),
-                                          self._pos.getY(),
-                                          {"text": self._text})
-            self._textChange = False
-        _root.update()
+    def create(self, canvas, x, y):
+        return canvas.create_text(x, y, {"text": self._text})
 
+class RBGraphicsShape(RBGraphicObject):
+    
+    def __init__(self, pos, colour="black", fill=""):
+        super(RBGraphicsShape, self).__init__(pos)
+        self._colour = colour
+        self._fill = fill
 
-class RBCircle(RBGraphicObject):
+    def setColour(self, colour):
+        self._colour = colour
+        self._recreate = True
+
+    def setFill(self, fill):
+        self._fill = fill
+        self._recreate = True
+    
+class RBCircle(RBGraphicsShape):
 
     def __init__(self, centre, radius, colour="black", fill=""):
-        super(RBCircle, self).__init__(centre)
+        super(RBCircle, self).__init__(centre, colour, fill)
         self._radius = radius
-        self._colour = colour
-        self._fill = fill
-        self._id = None
 
-    def draw(self, canvas, x, y):
-        if self._id is None:
-            self.setObjectPos(x, y)
-            x1 = self._pos.getX() - self._radius
-            y1 = self._pos.getY() - self._radius
-            x2 = self._pos.getX() + self._radius
-            y2 = self._pos.getY() + self._radius
-            self._id = canvas.create_oval(x1, y1, x2, y2,
-                                          {"fill": self._fill,
-                                           "outline": self._colour})
-            canvas.update()
-        else:
-            dx = x - self._pos.getX()
-            dy = y - self._pos.getY()
-            canvas.move(self._id, dx, dy)
-        self.setObjectPos(x, y)
-        _root.update()
+    def create(self, canvas, x, y):
+        x1 = self._pos.getX() - self._radius
+        y1 = self._pos.getY() - self._radius
+        x2 = self._pos.getX() + self._radius
+        y2 = self._pos.getY() + self._radius
+        return canvas.create_oval(x1, y1, x2, y2,
+                                        {"fill": self._fill,
+                                        "outline": self._colour})
 
 
-class RBRectangle(RBGraphicObject):
+class RBRectangle(RBGraphicsShape):
 
     def __init__(self, pos, height, width, colour="black", fill=""):
-        super(RBRectangle, self).__init__(pos)
+        super(RBRectangle, self).__init__(pos, colour, fill)
         self._height = height
         self._width = width
-        self._colour = colour
-        self._fill = fill
-        self._id = None
 
-    def draw(self, canvas, x, y):
-        if self._id is None:
-            self.setObjectPos(x, y)
-            x1 = self._pos.getX()
-            y1 = self._pos.getY()
-            x2 = self._pos.getX() + self._width
-            y2 = self._pos.getY() + self._height
-            self._id = canvas.create_rectangle(x1, y1, x2, y2,
-                                               {"fill": self._fill,
-                                                "outline": self._colour})
-            canvas.update()
-        else:
-            dx = x - self._pos.getX()
-            dy = y - self._pos.getY()
-            canvas.move(self._id, dx, dy)
-        self.setObjectPos(x, y)
-        _root.update()
+    def create(self, canvas, x, y):
+        x1 = self._pos.getX()
+        y1 = self._pos.getY()
+        x2 = self._pos.getX() + self._width
+        y2 = self._pos.getY() + self._height
+        return canvas.create_rectangle(x1, y1, x2, y2,
+                                            {"fill": self._fill,
+                                            "outline": self._colour})
