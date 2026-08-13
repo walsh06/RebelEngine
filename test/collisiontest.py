@@ -8,7 +8,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from rbphysics.rbcollisionobjects import RBBoundingBox, RBBoundingCircle
 from rbphysics.rbcollision import RBCollision
 from rbbase.rbbase import RB2DPosition
-from rbbase.rbgameobject import RBRectangle
+from rbbase.rbgameobject import RBGameObjectType, RBRectangle
 
 class CollisionTest(object):
 
@@ -34,9 +34,11 @@ class CollisionTest(object):
         from rbbase.rbworld import RBWorld
         from rbbase.rbgameobject import RBGameObject
 
+        MyObject = RBGameObjectType(1, "MyObjectType")
+
         class TestObject(RBGameObject):
             def __init__(self, name, pos, w, h):
-                super(TestObject, self).__init__(pos)
+                super(TestObject, self).__init__(pos, gameObjectType=MyObject)
                 self.setPos(pos)
                 self.setCollider(RBBoundingBox(pos, w, h))
                 self._name = name
@@ -45,7 +47,7 @@ class CollisionTest(object):
                 return self._name
 
             def onCollision(self, other):
-                print(f"{self.getName()} collided with {other.getName()}")
+                print(f"{self.getName()} ({self.ObjectTypeName}) collided with {other.getName()}")
 
         class TestRectangle(RBRectangle):
             def getName(self):
