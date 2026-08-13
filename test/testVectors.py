@@ -26,7 +26,6 @@ class Ball():
             self._velocity.changeAngle(90)
             self._velocity.changeSpeed(1)
 
-    
     def draw(self, graphics):
         if self._img:
             self._img.draw(graphics, self._pos.getX(), self._pos.getY())
@@ -42,7 +41,7 @@ class TestGame(RBGame):
         self.testController.registerKeyFunction("q", self.quit)
         self.ball = Ball("ball.png")
 
-    def onUpdate(self):
+    def onUpdate(self, deltaTime):
         self.ball.update()
 
     def onDraw(self):

@@ -1,5 +1,5 @@
 from itertools import chain
-
+import rbphysics.rbcollision as rbcollision
 from rbbase.rbgameobject import RBGameObject
 from rbgraphics.rbscene import RBScene
 
@@ -19,9 +19,23 @@ class RBWorld(RBScene):
         for obj in objects:
             obj.onUpdate(deltaTime)
 
-        for obj in objects:
+        self._dispatchCollisions([obj for obj in objects
+                                  if obj.isActive() and obj.getCollider()])
+        for obj in list(objects):
             if obj.shouldRemove():
                 self.removeObject(obj)
+
+    def _dispatchCollisions(self, objects):
+        """
+        Check for collisions between all pairs of objects and dispatch collision events.
+        """
+        # Every pair, which is fine at these sizes but wants a broadphase
+        # before it is used for anything large.
+        for index, first in enumerate(objects):
+            for second in objects[index + 1:]:
+                if rbcollision.overlaps(first, second):
+                    first.onCollision(second)
+                    second.onCollision(first)
 
     def addObject(self, obj, layer=0):
         """
