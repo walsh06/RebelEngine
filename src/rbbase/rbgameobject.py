@@ -4,13 +4,14 @@ import os
 sys.path.append(os.path.join(".."))
 
 from rbgraphics.rbgraphicsobjects import RBGraphicCircle, RBGraphicRectangle
+from rbphysics.rbcollisionobjects import RBBoundingBox, RBBoundingCircle
 
 class RBGameObject(object):
-    def __init__(self, pos, graphic=None, collider=None, behaviours=[]):
+    def __init__(self, pos, graphic=None, collider=None, behaviours=None):
         self._pos = pos
         self._graphic = graphic
         self._collider = collider
-        self._behaviours = behaviours
+        self._behaviours = behaviours if behaviours is not None else []
         self._active = True
         self._remove = False
 
@@ -104,6 +105,20 @@ class RBGameObject(object):
         for behaviour in self._behaviours:
             behaviour.execute(self, deltaTime)
 
+    ## Collisions
+
+    def setCollider(self, collider):
+        """
+        Set the collider for the game object.
+        """
+        self._collider = collider
+
+    def getCollider(self):
+        """
+        Get the collider of the game object.
+        """
+        return self._collider
+    
     ## Hooks for subclasses to override
 
     def onUpdate(self, deltaTime):
@@ -112,7 +127,7 @@ class RBGameObject(object):
         """
         pass
 
-    def onCollision(self, other, deltaTime):
+    def onCollision(self, other):
         """
         Called when the game object collides with another object.
         """
@@ -120,9 +135,10 @@ class RBGameObject(object):
 
 class RBRectangle(RBGameObject):
 
-    def __init__(self, pos, width, height, colour="black", fill=""):
+    def __init__(self, pos, width, height, colour="black", fill="", solid=True):
         graphic = RBGraphicRectangle(pos, width, height, colour, fill)
-        super(RBRectangle, self).__init__(pos, graphic)
+        bounding_box = RBBoundingBox(pos, width, height)
+        super(RBRectangle, self).__init__(pos, graphic, bounding_box)
         self._width = width
         self._height = height
 
@@ -134,9 +150,10 @@ class RBRectangle(RBGameObject):
 
 class RBCircle(RBGameObject):
     
-    def __init__(self, centre, radius, colour="black", fill=""):
+    def __init__(self, centre, radius, colour="black", fill="", solid=False):
         graphic = RBGraphicCircle(centre, radius, colour, fill)
-        super(RBCircle, self).__init__(centre, graphic)
+        bounding_circle = RBBoundingCircle(centre, radius)
+        super(RBCircle, self).__init__(centre, graphic, bounding_circle)
         self._radius = radius
 
     def setColour(self, colour):
