@@ -22,7 +22,7 @@ class RBGame(object):
     def update(self):
         time.sleep(self._updateRate)
 
-    def onUpdate(self):
+    def onUpdate(self, deltaTime):
         pass
 
     def onDraw(self):
@@ -77,7 +77,7 @@ class RBGame(object):
                     # catch up. Leftover time smaller than one step stays in
                     # the accumulator for the next frame.
                     while accumulator >= self._updateRate:
-                        self.onUpdate()
+                        self.onUpdate(self._updateRate)
                         accumulator -= self._updateRate
                         # onUpdate may have called quit() or closed the window,
                         # so stop rather than simulating a dead game.

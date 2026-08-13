@@ -12,6 +12,7 @@ class RBGameObject(object):
         self._collider = collider
         self._behaviours = behaviours
         self._active = True
+        self._remove = False
 
     def isActive(self):
         """
@@ -24,6 +25,18 @@ class RBGameObject(object):
         Set the active state of the game object.
         """
         self._active = active
+
+    def removeObject(self):
+        """
+        Mark the game object for removal.
+        """
+        self._remove = True
+
+    def shouldRemove(self):
+        """
+        Check if the game object should be removed.
+        """
+        return self._remove
 
     ## Position
 
@@ -55,7 +68,7 @@ class RBGameObject(object):
         """
         Draw the game object on the canvas.
         """
-        if self._graphic:
+        if self._graphic and self._active:
             self._graphic.draw(canvas)
 
     def undraw(self, canvas):
@@ -84,22 +97,22 @@ class RBGameObject(object):
         if behaviour in self._behaviours:
             self._behaviours.remove(behaviour)
 
-    def runBehaviours(self):
+    def runBehaviours(self, deltaTime):
         """
         Execute all behaviours associated with the game object.
         """
         for behaviour in self._behaviours:
-            behaviour.execute(self)
+            behaviour.execute(self, deltaTime)
 
     ## Hooks for subclasses to override
 
-    def onUpdate(self):
+    def onUpdate(self, deltaTime):
         """
         Called every frame to update the game object's state.
         """
         pass
 
-    def onCollision(self):
+    def onCollision(self, other, deltaTime):
         """
         Called when the game object collides with another object.
         """

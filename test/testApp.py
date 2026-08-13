@@ -4,11 +4,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from rbgraphics.rbgraphics import RBGraphics
+from rbbase.rbworld import RBWorld
+from rbbase.rbgameobject import RBRectangle
 from rbgraphics.rbgraphicsobjects import RBImage, RBText
 from rbbase.rbgame import RBGame
 from rbbase.rbplayer import RBPlayer
 from rbbase.rbbase import RB2DPosition
+from rbai.rbbehaviour import RBMoveUp
 
 class TestPlayer(RBPlayer):
 
@@ -36,25 +38,23 @@ class TestGame(RBGame):
         self.testController.registerKeyFunction("Left", self.testPlayer.moveLeft)
         self.testController.registerKeyFunction("Right", self.testPlayer.moveRight)
         self.testImage = RBImage("ship.png", RB2DPosition(100, 100))
-        self.testText = RBText("SHIP", RB2DPosition(100, 50))
-        self._running = True
         self.count = 0
         self.testText = RBText(self.count, RB2DPosition(100, 150))
 
-    def onUpdate(self):
+        self.world = RBWorld(self._graphics)
+        self.movingBlock = RBRectangle(RB2DPosition(50, 50), 20, 20, "blue", "blue")
+        self.movingBlock.addBehaviour(RBMoveUp(20))
+        self.world.addObject(self.movingBlock)
+        self.world.addObject(self.testText)
+        self.world.addObject(self.testImage)
+
+    def onUpdate(self, deltaTime):
         self.count += 1
+        self.testText.setText(self.count)
+        self.world.update(deltaTime)
 
     def onDraw(self):
-        self.testText.setText(self.count)
-        self.testText.draw(self.testGraphics)
-        if self.count == 30:
-            self.testImage.undraw(self.testGraphics)
-        elif self.count < 30:
-            self.testImage.draw(self.testGraphics, 100, 100)
-
-    def quit(self):
-        self._running = False
-
+        self.world.draw()
 
 test = TestGame()
 test.run()
