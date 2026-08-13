@@ -17,7 +17,8 @@ class RBGraphics(tk.Canvas):
         self.pack()
         self.closed = False
         self.lastKey = None
-        self.bind_all("<Key>", self._onKeyPress)
+        self.bind_all("<KeyPress>", self._onKeyPress)
+        self.bind_all("<KeyRelease>", self._onKeyRelease)
         _root.update()
         self._images = []
         self._controller = None
@@ -54,7 +55,11 @@ class RBGraphics(tk.Canvas):
 
     def _onKeyPress(self, event):
         if self._controller:
-            self._controller._pressKey(event.keysym)
+            self._controller._keyDown(event.keysym)
+
+    def _onKeyRelease(self, event):
+        if self._controller:
+            self._controller._keyUp(event.keysym)
 
     def draw(self, image, x, y):
         image.draw(self, x, y)
