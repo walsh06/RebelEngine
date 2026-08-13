@@ -1,25 +1,23 @@
-class RBMoveBehaviourBase(object):
+class RBBehaviour(object):
+
+    def execute(self, obj, deltaTime):
+        pass
+
+
+class RBMoveDown(RBBehaviour):
 
     def __init__(self, speed):
         self._speed = speed
 
-    def updatePosition(self, pos):
-        pass
+    def execute(self, obj, deltaTime):
+        obj.movePos(0, self._speed * deltaTime)
 
 
-class RBMoveDown(RBMoveBehaviourBase):
-
-    def __init__(self, speed):
-        super(RBMoveDown, self).__init__(speed)
-
-    def updatePosition(self, pos):
-        pos.movePos(0, self._speed)
-
-
-class RBMoveUp(RBMoveBehaviourBase):
+class RBMoveUp(RBBehaviour):
 
     def __init__(self, speed):
-        super(RBMoveUp, self).__init__(speed)
+        self._speed = speed
 
-    def updatePosition(self, pos):
-        pos.movePos(0, -self._speed)
+    def execute(self, obj, deltaTime):
+        obj.movePos(0, -self._speed * deltaTime)
+

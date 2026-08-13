@@ -17,12 +17,18 @@ class RBScene(object):
         self.layers[layer].append(obj)
         self._reorder = True
 
-    def removeObject(self, obj, layer=0):
+    def removeObject(self, obj, layer=None):
         """
         Remove an RBGraphicObject or RBGameObject from the scene.
         """
-        if layer in self.layers and obj in self.layers[layer]:
-            self.layers[layer].remove(obj)
+        if layer is None:
+            for l, objects in self.layers.items():
+                if obj in objects:
+                    self.layers[l].remove(obj)
+                    break
+        else:
+            if layer in self.layers and obj in self.layers[layer]:
+                self.layers[layer].remove(obj)
         obj.undraw(self.canvas)
         self._reorder = True
 
