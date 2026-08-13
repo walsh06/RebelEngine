@@ -1,4 +1,4 @@
-from math import cos, sin, radians
+from math import cos, sin, radians, atan2, degrees, hypot
 
 
 class RBVector(object):
@@ -62,4 +62,11 @@ class RBVelocity(object):
             self._velocity._y *= -1
         elif direction.lower() == "left" or direction.lower() == "right":
             self._velocity._x *= -1
+        self._syncFromVector()
+
+    def _syncFromVector(self):
+        x = self._velocity.getX()
+        y = self._velocity.getY()
+        self._speed = hypot(x, y)
+        self._angle = degrees(atan2(y, x))
 

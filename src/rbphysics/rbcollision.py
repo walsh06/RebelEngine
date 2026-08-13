@@ -2,7 +2,7 @@ from math import sqrt, fabs
 import sys
 import os
 
-sys.path.append(os.path.join(".."))
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from rbbase.rbbase import RB2DPosition
 
@@ -39,7 +39,7 @@ class RBCollision(object):
                 (cornerOne.getY() - cornerTwo.getY())))
 
         bottom = sqrt((cornerOne.getX() - cornerTwo.getX()) ** 2 +
-                      (cornerOne.getX() - cornerTwo.getY()) ** 2)
+                      (cornerOne.getY() - cornerTwo.getY()) ** 2)
         if bottom == 0:
             return False
         else:

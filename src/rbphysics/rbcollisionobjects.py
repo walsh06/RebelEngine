@@ -11,12 +11,12 @@ class RBBoundingBox(RBCollisionObject):
         self.setDimensions(w, h)
         self._setBounds()
 
-    def setPosition(self, x, y):
-        self._pos.setPos(x, y)
+    def setPos(self, pos):
+        self._pos = pos
         self._setBounds()
 
-    def setPosition(self, pos):
-        self._pos = pos
+    def setPosXY(self, x, y):
+        self._pos.setPos(x, y)
         self._setBounds()
 
     def setDimensions(self, w, h):
