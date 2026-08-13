@@ -5,25 +5,24 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from rbbase.rbworld import RBWorld
-from rbbase.rbgameobject import RBRectangle
+from rbbase.rbgameobject import RBRectangle, RBGameObject
 from rbgraphics.rbgraphicsobjects import RBImage, RBText
 from rbbase.rbgame import RBGame
 from rbbase.rbplayer import RBPlayer
 from rbbase.rbbase import RB2DPosition
 from rbai.rbbehaviour import RBMoveUp
 
-class TestPlayer(RBPlayer):
+class TestPlayer(RBGameObject):
 
-    def __init__(self, x, y, img):
-        super(TestPlayer, self).__init__(x, y)
-        self._img = RBImage(img, RB2DPosition(x, y))
+    def __init__(self, pos, img):
+        graphic = RBImage(img, pos)
+        super(TestPlayer, self).__init__(pos, graphic)
 
     def moveLeft(self):
-        self._pos.movePos(-1, 0)
+        self.movePos(-1, 0)
 
     def moveRight(self):
-        self._pos.movePos(1, 0)
-
+        self.movePos(1, 0)
 
 class TestGame(RBGame):
 
@@ -34,7 +33,7 @@ class TestGame(RBGame):
         self.initController()
         self.testController = self._controller
         self.testController.registerKeyFunction("q", self.quit)
-        self.testPlayer = TestPlayer(0, 0, "ship.png")
+        self.testPlayer = TestPlayer(RB2DPosition(0, 100), "ship.png")
         self.testController.registerKeyFunction("Left", self.testPlayer.moveLeft)
         self.testController.registerKeyFunction("Right", self.testPlayer.moveRight)
         self.testImage = RBImage("ship.png", RB2DPosition(100, 100))
@@ -47,6 +46,7 @@ class TestGame(RBGame):
         self.world.addObject(self.movingBlock)
         self.world.addObject(self.testText)
         self.world.addObject(self.testImage)
+        self.world.addObject(self.testPlayer)
 
     def onUpdate(self, deltaTime):
         self.count += 1

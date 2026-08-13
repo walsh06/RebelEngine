@@ -88,6 +88,7 @@ class RBGame(object):
                     if not self._isRunning():
                         break
 
+                    self._controller.update(self._updateRate)
                     self.onDraw()
                     # Flush this frame's drawing to the screen in one go.
                     self._graphics.flushEvents()

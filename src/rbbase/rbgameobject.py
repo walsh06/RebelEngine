@@ -6,11 +6,11 @@ sys.path.append(os.path.join(".."))
 from rbgraphics.rbgraphicsobjects import RBGraphicCircle, RBGraphicRectangle
 
 class RBGameObject(object):
-    def __init__(self, pos, graphic=None, collider=None, behaviours=[]):
+    def __init__(self, pos, graphic=None, collider=None, behaviours=None):
         self._pos = pos
         self._graphic = graphic
         self._collider = collider
-        self._behaviours = behaviours
+        self._behaviours = behaviours if behaviours is not None else []
         self._active = True
         self._remove = False
 
