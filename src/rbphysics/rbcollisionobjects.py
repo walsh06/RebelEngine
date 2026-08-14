@@ -52,3 +52,6 @@ class RBBoundingCircle(RBCollisionObject):
 
     def setRadius(self, radius):
         self._radius = radius
+
+    def setPos(self, pos):
+        self.setCentre(pos)

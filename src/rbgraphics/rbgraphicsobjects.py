@@ -104,7 +104,7 @@ class RBGraphicCircle(RBGraphicsShape):
 
 class RBGraphicRectangle(RBGraphicsShape):
 
-    def __init__(self, pos, height, width, colour="black", fill=""):
+    def __init__(self, pos, width, height, colour="black", fill=""):
         super(RBGraphicRectangle, self).__init__(pos, colour, fill)
         self._height = height
         self._width = width
