@@ -21,6 +21,15 @@
             "program": "${workspaceFolder}/test/testGraphics.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}/test"
+        },
+
+        {
+            "name": "Blockbreaker",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/BlockBreaker/blockbreaker.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/test"
         }
     ]
 }
