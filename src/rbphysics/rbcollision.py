@@ -38,17 +38,25 @@ class RBCollision(object):
 
     @staticmethod
     def intersectCircle(cornerOne, cornerTwo, circle):
-        top = (((cornerOne.getX() - cornerTwo.getX()) *
-                (cornerTwo.getY() - circle._centre.getY())) -
-               ((cornerTwo.getX() - circle._centre.getX()) *
-                (cornerOne.getY() - cornerTwo.getY())))
+        ax = cornerOne.getX()
+        ay = cornerOne.getY()
+        bx = cornerTwo.getX()
+        by = cornerTwo.getY()
+        cx = circle._centre.getX()
+        cy = circle._centre.getY()
 
-        bottom = sqrt((cornerOne.getX() - cornerTwo.getX()) ** 2 +
-                      (cornerOne.getY() - cornerTwo.getY()) ** 2)
-        if bottom == 0:
-            return False
-        else:
-            return (fabs(top) / bottom) < circle._radius
+        dx = bx - ax
+        dy = by - ay
+        lengthSquared = dx * dx + dy * dy
+        if lengthSquared == 0:
+            return sqrt((cx - ax) ** 2 + (cy - ay) ** 2) <= circle._radius
+
+        projection = ((cx - ax) * dx + (cy - ay) * dy) / lengthSquared
+        projection = min(1, max(0, projection))
+
+        closestX = ax + projection * dx
+        closestY = ay + projection * dy
+        return sqrt((cx - closestX) ** 2 + (cy - closestY) ** 2) <= circle._radius
 
     @staticmethod
     def collideCircleToCircle(c1, c2):
