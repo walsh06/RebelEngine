@@ -9,6 +9,25 @@ class RBWorld(RBScene):
         # List of simulated game objects in the world
         self._worldObjects = []
 
+    def clear(self, layer=None):
+        """
+        Clear objects from the scene and from the simulation list to prevent
+        stale game objects from continuing to update after a reset.
+        """
+        if layer is None:
+            objects = list(self._worldObjects)
+            for obj in objects:
+                if obj in self._worldObjects:
+                    self._worldObjects.remove(obj)
+            super(RBWorld, self).clear(layer)
+            return
+
+        if layer in self.layers:
+            for obj in list(self.layers[layer]):
+                if isinstance(obj, RBGameObject) and obj in self._worldObjects:
+                    self._worldObjects.remove(obj)
+        super(RBWorld, self).clear(layer)
+
     def update(self, deltaTime):
         """
         Update the world and all its game objects.

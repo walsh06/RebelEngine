@@ -30,6 +30,13 @@ class CollisionTest(object):
         print(RBCollision.collideCircleToRectangle(c, r2))
         print(RBCollision.collideCircleToRectangle(c, r3))
 
+    def testCircleAboveBlockWithoutOverlap(self):
+        circle = RBBoundingCircle(RB2DPosition(75, 5), 10)
+        rect = RBBoundingBox(RB2DPosition(0, 0), 50, 20)
+        print("> Testing Circle/Rectangle false positive")
+        print(RBCollision.collideCircleToRectangle(circle, rect))
+        assert RBCollision.collideCircleToRectangle(circle, rect) is False
+
     def testWorldCollision(self):
         from rbbase.rbworld import RBWorld
         from rbbase.rbgameobject import RBGameObject
