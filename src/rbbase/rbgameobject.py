@@ -5,6 +5,7 @@ sys.path.append(os.path.join(".."))
 
 from rbgraphics.rbgraphicsobjects import RBGraphicCircle, RBGraphicRectangle
 from rbphysics.rbcollisionobjects import RBBoundingBox, RBBoundingCircle
+from rbphysics.rbvelocity import RBVelocity
 
 class RBGameObjectType(object):
     """
@@ -29,7 +30,7 @@ class RBGameObjectType(object):
 DEFAULT_GAME_OBJECT = RBGameObjectType(0, "Default")
 
 class RBGameObject(object):
-    def __init__(self, pos, graphic=None, collider=None, behaviours=None, gameObjectType=DEFAULT_GAME_OBJECT):
+    def __init__(self, pos, graphic=None, collider=None, behaviours=None, velocity=None, gameObjectType=DEFAULT_GAME_OBJECT):
         self._pos = pos
         self._graphic = graphic
         self._collider = collider
@@ -37,6 +38,7 @@ class RBGameObject(object):
         self._active = True
         self._remove = False
         self._gameObjectType = gameObjectType
+        self._velocity = velocity
 
     @property
     def ObjectTypeId(self):
@@ -105,6 +107,67 @@ class RBGameObject(object):
         Move the position of the game object.
         """
         self._pos.movePos(dx, dy)
+
+    ## Velocity methods
+
+    def setVelocity(self, velocity):
+        """
+        Set the velocity for physics-based movement.
+        
+        Args:
+            velocity: An RBVelocity object, or None to disable velocity-based movement
+        
+        Example:
+            obj.setVelocity(RBVelocity(speed=100, angle=45))
+        """
+        if velocity is not None and not isinstance(velocity, RBVelocity):
+            raise TypeError(f"Expected RBVelocity or None, got {type(velocity).__name__}")
+        self._velocity = velocity
+
+    def getVelocity(self):
+        """
+        Get the current velocity, or None if no velocity is set.
+        
+        Returns:
+            RBVelocity object or None
+        """
+        return self._velocity
+
+    def hasVelocity(self):
+        """
+        Check if the game object has an active velocity.
+        
+        Returns:
+            bool: True if velocity is set, False otherwise
+        """
+        return self._velocity is not None
+
+    def applyVelocity(self, deltaTime):
+        """
+        Apply velocity-based movement to update the object's position.
+        Called automatically by the world update loop.
+        
+        This method:
+        - Checks if the object has velocity
+        - If yes: updates position based on velocity and deltaTime
+        - If no: does nothing (object remains static)
+        
+        Args:
+            deltaTime: Time elapsed since last frame (in seconds)
+        """
+        if self._velocity is not None:
+            # Calculate displacement: displacement = velocity * time
+            dx = self._velocity.getVelocityX() * deltaTime
+            dy = self._velocity.getVelocityY() * deltaTime
+            
+            # Update position
+            self._pos.movePos(dx, dy)
+            
+            # Sync graphics and collider to new position
+            if self._graphic is not None:
+                self._graphic.setPos(self._pos)
+            if self._collider is not None:
+                self._collider.setPos(self._pos)
 
     ## Drawing methods
 

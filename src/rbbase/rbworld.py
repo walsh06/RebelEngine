@@ -31,15 +31,34 @@ class RBWorld(RBScene):
     def update(self, deltaTime):
         """
         Update the world and all its game objects.
+        
+        Update sequence:
+        1. Run all active behaviours
+        2. Call onUpdate hooks for custom logic
+        3. Apply velocity-based movement
+        4. Detect and dispatch collisions
+        5. Remove marked objects
         """
         objects = self._worldObjects
+        
+        # Step 1: Run behaviours
         for obj in objects:
             obj.runBehaviours(deltaTime)
+        
+        # Step 2: Run custom update hooks
         for obj in objects:
             obj.onUpdate(deltaTime)
 
+        # Step 3: Apply velocity-based movement
+        # This must happen before collision detection so collisions see correct positions
+        for obj in objects:
+            obj.applyVelocity(deltaTime)
+
+        # Step 4: Dispatch collisions (before removing objects)
         self._dispatchCollisions([obj for obj in objects
                                   if obj.isActive() and obj.getCollider()])
+        
+        # Step 5: Remove objects marked for deletion
         for obj in list(objects):
             if obj.shouldRemove():
                 self.removeObject(obj)
