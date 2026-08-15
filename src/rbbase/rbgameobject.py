@@ -193,7 +193,7 @@ class RBRectangle(RBGameObject):
 
 class RBCircle(RBGameObject):
     
-    def __init__(self, centre, radius, colour="black", fill="", solid=False,behaviours=None, gameObjectType=DEFAULT_GAME_OBJECT):
+    def __init__(self, centre, radius, colour="black", fill="", solid=True,behaviours=None, gameObjectType=DEFAULT_GAME_OBJECT):
         graphic = RBGraphicCircle(centre, radius, colour, fill)
         bounding_circle = RBBoundingCircle(centre, radius)
         super(RBCircle, self).__init__(centre, graphic=graphic, collider=bounding_circle, behaviours=behaviours, gameObjectType=gameObjectType)
