@@ -5,10 +5,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from rbbase.rbgame import RBGame
-from rbgraphics.rbgraphicsobjects import RBText, RBGraphicCircle, RBGraphicRectangle
+from rbgraphics.rbgraphicsobjects import RBText, RBGraphicCircle
 from rbbase.rbbase import RB2DPosition
 from rbgraphics.rbscene import RBScene
-from rbbase.rbgameobject import RBRectangle
+from rbbase.rbgameobjects import RBRectangle
 
 class TestGame(RBGame):
 
@@ -32,7 +32,7 @@ class TestGame(RBGame):
         self.y = 20
         self.count = 0
 
-    def onUpdate(self):
+    def onUpdate(self, deltaTime):
         self.x += 1
         self.y += 1
 

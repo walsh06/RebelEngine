@@ -8,7 +8,8 @@ sys.path.insert(0, str(ROOT / "src"))
 from rbphysics.rbcollisionobjects import RBBoundingBox, RBBoundingCircle
 from rbphysics.rbcollision import RBCollision
 from rbbase.rbbase import RB2DPosition
-from rbbase.rbgameobject import RBGameObjectType, RBRectangle
+from rbbase.rbgameobject import RBGameObjectType
+from rbbase.rbgameobjects import RBRectangle, SolidBlock
 
 class CollisionTest(object):
 

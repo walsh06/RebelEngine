@@ -3,8 +3,6 @@ import os
 
 sys.path.append(os.path.join(".."))
 
-from rbgraphics.rbgraphicsobjects import RBGraphicCircle, RBGraphicRectangle
-from rbphysics.rbcollisionobjects import RBBoundingBox, RBBoundingCircle
 from rbphysics.rbvelocity import RBVelocity
 
 class RBGameObjectType(object):
@@ -238,32 +236,3 @@ class RBGameObject(object):
         Called when the game object collides with another object.
         """
         pass
-
-class RBRectangle(RBGameObject):
-
-    def __init__(self, pos, width, height, colour="black", fill="", solid=True, behaviours=None, gameObjectType=DEFAULT_GAME_OBJECT):
-        graphic = RBGraphicRectangle(pos, width, height, colour, fill)
-        bounding_box = RBBoundingBox(pos, width, height)
-        super(RBRectangle, self).__init__(pos, graphic=graphic, collider=bounding_box, behaviours=behaviours, gameObjectType=gameObjectType)
-        self._width = width
-        self._height = height
-
-    def setColour(self, colour):
-        self._graphic.setColour(colour)
-
-    def setFill(self, fill):
-        self._graphic.setFill(fill)
-
-class RBCircle(RBGameObject):
-    
-    def __init__(self, centre, radius, colour="black", fill="", solid=True,behaviours=None, gameObjectType=DEFAULT_GAME_OBJECT):
-        graphic = RBGraphicCircle(centre, radius, colour, fill)
-        bounding_circle = RBBoundingCircle(centre, radius)
-        super(RBCircle, self).__init__(centre, graphic=graphic, collider=bounding_circle, behaviours=behaviours, gameObjectType=gameObjectType)
-        self._radius = radius
-
-    def setColour(self, colour):
-        self._graphic.setColour(colour)
-
-    def setFill(self, fill):
-        self._graphic.setFill(fill)
