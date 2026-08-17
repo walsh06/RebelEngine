@@ -6,7 +6,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from rbbase.rbgame import RBGame
 from rbsound.rbsound import RBSound, RBTempSound
-from rbgraphics.rbgraphicsobjects import RBText
+from rbgraphics.rbgraphicsobjects import RBTextGraphic
 from rbbase.rbbase import RB2DPosition
 
 
@@ -20,7 +20,7 @@ class TestGame(RBGame):
         self.testController = self._controller
         self.testController.registerKeyFunction("q", self.quit)
         self.testController.registerKeyFunction("space", self.playSound)
-        self.testText = RBText("TEST", RB2DPosition(100, 50))
+        self.testText = RBTextGraphic("TEST", RB2DPosition(100, 50))
         self.testSound = RBSound("test.wav")
         self.count = 0
 
