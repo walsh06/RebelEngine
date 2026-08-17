@@ -86,6 +86,17 @@ class RBVector(object):
 
 class RBVelocity(object):
 
+    @classmethod
+    def fromPositions(cls, speed, posOne, posTwo):
+        vel = cls(speed, 0)
+        vecOne = RBVector(posOne.x, posOne.y)
+        vecTwo = RBVector(posTwo.x, posTwo.y)
+        vec = vecTwo - vecOne
+        vec = vec.normalize()
+        vec = vec * speed
+        vel.set_velocity_components(vec.x, vec.y)
+        return vel
+        
     def __init__(self, speed=0, angle=0):
         if speed < 0:
             raise ValueError(f"Speed cannot be negative (got {speed})")
