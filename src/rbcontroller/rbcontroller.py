@@ -2,11 +2,14 @@ KEY_DOWN = "key_down"
 KEY_UP = "key_up"
 KEY_HELD = "key_held"
 
+from rbbase.rbbase import RB2DPosition
+
 class RBBaseController(object):
 
     def __init__(self):
         self._keyMap = {KEY_UP: {}, KEY_DOWN: {}, KEY_HELD: {}}
         self._heldKeys = set()
+        self._mousePos = RB2DPosition(0,0)
 
     def _keyDown(self, key):
         """
@@ -24,6 +27,13 @@ class RBBaseController(object):
         key = key.lower()
         self._heldKeys.discard(key)
         self._keyMap[KEY_UP].get(key, lambda: None)()
+
+    def _moveMouse(self, x, y):
+        self._mousePos = RB2DPosition(x, y)
+
+    @property
+    def mousePos(self):
+        return self._mousePos
 
     def update(self, deltaTime):
         """
