@@ -49,13 +49,22 @@ class RBGraphicObject(object):
 
 class RBImage(RBGraphicObject):
 
-    def __init__(self, image, pos):
+    def __init__(self, image, pos, anchor="nw"):
         super(RBImage, self).__init__(pos)
         self._img = tk.PhotoImage(file=image, master=_root)
+        self._anchor = anchor
 
     def create(self, canvas, x, y):
-        return canvas.create_image(x, y, image=self._img)
+        return canvas.create_image(x, y, image=self._img, anchor=self._anchor)
             
+    @property
+    def width(self):
+        return self._img.width()
+
+    @property
+    def height(self):
+        return self._img.height()
+
 
 class RBText(RBGraphicObject):
 

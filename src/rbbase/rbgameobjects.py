@@ -4,7 +4,7 @@ import os
 sys.path.append(os.path.join(".."))
 
 from rbbase.rbgameobject import RBGameObject, DEFAULT_GAME_OBJECT
-from rbgraphics.rbgraphicsobjects import RBGraphicCircle, RBGraphicRectangle
+from rbgraphics.rbgraphicsobjects import RBGraphicCircle, RBGraphicRectangle, RBImage
 from rbphysics.rbcollisionobjects import RBBoundingBox, RBBoundingCircle
 
 
@@ -122,4 +122,11 @@ class RBSolidBlock(RBRectangle):
         other.setPos(pos)
         if otherCollider is not None:
             otherCollider.setPos(pos)
-        
+
+
+class RBSprite(RBGameObject):
+
+    def __init__(self, img, pos, hasCollider=True, behaviours=None, velocity=None, gameObjectType=DEFAULT_GAME_OBJECT):
+        graphic = RBImage(img, pos, anchor="nw")
+        collider = RBBoundingBox(pos, graphic.width, graphic.height) if hasCollider else None
+        super(RBSprite, self).__init__(pos, graphic, collider, behaviours, velocity, gameObjectType)
