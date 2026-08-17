@@ -5,7 +5,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from rbbase.rbgame import RBGame
-from rbgraphics.rbgraphicsobjects import RBText, RBGraphicCircle
+from rbgraphics.rbgraphicsobjects import RBTextGraphic, RBGraphicCircle
 from rbbase.rbbase import RB2DPosition
 from rbgraphics.rbscene import RBScene
 from rbbase.rbgameobjects import RBRectangle
@@ -19,8 +19,8 @@ class TestGame(RBGame):
         self.initController()
         self.testController = self._controller
         self.testController.registerKeyFunction("q", self.quit)
-        self.testText = RBText("TEST", RB2DPosition(100, 150))
-        self.countText = RBText("COUNT", RB2DPosition(100, 200))
+        self.testText = RBTextGraphic("TEST", RB2DPosition(100, 150))
+        self.countText = RBTextGraphic("COUNT", RB2DPosition(100, 200))
         self.testCircle = RBGraphicCircle(RB2DPosition(20, 20), 10, "red", "red")
         self.testRec = RBRectangle(RB2DPosition(50, 50), 10, 20, "black", "")
         self.scene = RBScene(self._graphics)

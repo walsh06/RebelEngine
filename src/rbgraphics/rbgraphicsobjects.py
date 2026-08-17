@@ -66,10 +66,10 @@ class RBImage(RBGraphicObject):
         return self._img.height()
 
 
-class RBText(RBGraphicObject):
+class RBTextGraphic(RBGraphicObject):
 
     def __init__(self, text, pos):
-        super(RBText, self).__init__(pos)
+        super(RBTextGraphic, self).__init__(pos)
         self._id = None
         self._text = text
 
