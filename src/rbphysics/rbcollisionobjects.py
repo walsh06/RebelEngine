@@ -20,6 +20,17 @@ class RBBoundingBox(RBCollisionObject):
         self._w = w
         self._h = h
 
+    def getPos(self):
+        return self._pos
+
+    @property
+    def width(self):
+        return self._w
+
+    @property
+    def height(self):
+        return self._h
+
     @property
     def left(self):
         return self._pos.getX()
@@ -52,6 +63,12 @@ class RBBoundingCircle(RBCollisionObject):
 
     def setRadius(self, radius):
         self._radius = radius
+
+    def getCentre(self):
+        return self._centre
+
+    def getRadius(self):
+        return self._radius
 
     def setPos(self, pos):
         self.setCentre(pos)
