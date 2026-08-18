@@ -143,6 +143,10 @@ class RBGraphicCircle(RBGraphicsShape):
         super(RBGraphicCircle, self).__init__(centre, colour, fill)
         self._radius = radius
 
+    @property
+    def radius(self):
+        return self._radius
+
     def create(self, canvas, x, y):
         x1 = self._pos.getX() - self._radius
         y1 = self._pos.getY() - self._radius
@@ -159,6 +163,14 @@ class RBGraphicRectangle(RBGraphicsShape):
         super(RBGraphicRectangle, self).__init__(pos, colour, fill)
         self._height = height
         self._width = width
+
+    @property
+    def width(self):
+        return self._width
+
+    @property
+    def height(self):
+        return self._height
 
     def create(self, canvas, x, y):
         x1 = self._pos.getX()
