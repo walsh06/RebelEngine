@@ -66,6 +66,145 @@ class RBImage(RBGraphicObject):
         return self._img.height()
 
 
+class RBAnimatedImage(RBGraphicObject):
+
+    @classmethod
+    def fromSpriteSheet(cls, spriteSheet, pos, frameWidth, frameHeight,
+                        frameCount=None, columns=None, frameIndices=None,
+                        frameRate=10, loop=True, autoplay=True, margin=0,
+                        spacing=0, anchor="nw"):
+        if frameWidth <= 0 or frameHeight <= 0:
+            raise ValueError("Frame dimensions must be greater than zero")
+        if margin < 0 or spacing < 0:
+            raise ValueError("margin and spacing cannot be negative")
+        if frameCount is not None and frameCount <= 0:
+            raise ValueError("frameCount must be greater than zero")
+        if frameIndices is not None and frameCount is not None:
+            raise ValueError("Pass frameCount or frameIndices, not both")
+
+        sheet = tk.PhotoImage(file=spriteSheet, master=_root)
+        availableColumns = ((sheet.width() - 2 * margin + spacing)
+                            // (frameWidth + spacing))
+        availableRows = ((sheet.height() - 2 * margin + spacing)
+                         // (frameHeight + spacing))
+        if availableColumns <= 0 or availableRows <= 0:
+            raise ValueError("Frame dimensions do not fit inside the sprite sheet")
+        if columns is None:
+            columns = availableColumns
+        if columns <= 0 or columns > availableColumns:
+            raise ValueError("columns exceeds the sprite sheet width")
+
+        capacity = columns * availableRows
+        if frameIndices is None:
+            if frameCount is None:
+                frameCount = capacity
+            frameIndices = range(frameCount)
+        else:
+            frameIndices = list(frameIndices)
+            if not frameIndices:
+                raise ValueError("frameIndices must contain at least one frame")
+
+        frames = []
+        for frameIndex in frameIndices:
+            if not isinstance(frameIndex, int) or not 0 <= frameIndex < capacity:
+                raise ValueError("frame index is outside the sprite sheet")
+            row, column = divmod(frameIndex, columns)
+            x = margin + column * (frameWidth + spacing)
+            y = margin + row * (frameHeight + spacing)
+            frame = tk.PhotoImage(width=frameWidth, height=frameHeight,
+                                  master=_root)
+            frame.tk.call(frame, "copy", sheet, "-from", x, y,
+                          x + frameWidth, y + frameHeight, "-to", 0, 0)
+            frames.append(frame)
+
+        animation = cls.__new__(cls)
+        RBGraphicObject.__init__(animation, pos)
+        animation._spriteSheet = sheet
+        animation._configureFrames(frames, frameRate, loop, autoplay, anchor)
+        return animation
+
+    def __init__(self, frames, pos, frameRate=10, loop=True, autoplay=True,
+                 anchor="nw"):
+        super(RBAnimatedImage, self).__init__(pos)
+        if not frames:
+            raise ValueError("RBAnimatedImage needs at least one frame")
+        loadedFrames = [tk.PhotoImage(file=frame, master=_root)
+                        for frame in frames]
+        self._configureFrames(loadedFrames, frameRate, loop, autoplay, anchor)
+
+    def _configureFrames(self, frames, frameRate, loop, autoplay, anchor):
+        if frameRate <= 0:
+            raise ValueError("frameRate must be greater than zero")
+        dimensions = {(frame.width(), frame.height())
+                      for frame in frames}
+        if len(dimensions) != 1:
+            raise ValueError("All animation frames must have the same dimensions")
+
+        self._frames = frames
+        self._anchor = anchor
+        self._frameDuration = 1.0 / frameRate
+        self._loop = loop
+        self._playing = autoplay
+        self._frameIndex = 0
+        self._elapsed = 0.0
+
+    @property
+    def width(self):
+        return self._frames[0].width()
+
+    @property
+    def height(self):
+        return self._frames[0].height()
+
+    @property
+    def frameIndex(self):
+        return self._frameIndex
+
+    def isPlaying(self):
+        return self._playing
+
+    def play(self):
+        self._playing = True
+
+    def pause(self):
+        self._playing = False
+
+    def stop(self):
+        self._playing = False
+        self._elapsed = 0.0
+        self._setFrame(0)
+
+    def update(self, deltaTime):
+        if not self._playing or len(self._frames) == 1:
+            return
+
+        self._elapsed += deltaTime
+        framesToAdvance = int(self._elapsed / self._frameDuration)
+        if framesToAdvance == 0:
+            return
+        self._elapsed -= framesToAdvance * self._frameDuration
+
+        nextFrame = self._frameIndex + framesToAdvance
+        if self._loop:
+            self._setFrame(nextFrame % len(self._frames))
+        elif nextFrame >= len(self._frames):
+            self._setFrame(len(self._frames) - 1)
+            self._playing = False
+            self._elapsed = 0.0
+        else:
+            self._setFrame(nextFrame)
+
+    def _setFrame(self, frameIndex):
+        if frameIndex != self._frameIndex:
+            self._frameIndex = frameIndex
+            self._recreate = True
+
+    def create(self, canvas, x, y):
+        return canvas.create_image(x, y,
+                                   image=self._frames[self._frameIndex],
+                                   anchor=self._anchor)
+
+
 class RBTextGraphic(RBGraphicObject):
 
     def __init__(self, text, pos, colour="black", font_family="TkDefaultFont",
