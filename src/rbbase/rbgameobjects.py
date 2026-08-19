@@ -4,7 +4,9 @@ import os
 sys.path.append(os.path.join(".."))
 
 from rbbase.rbgameobject import RBGameObject, DEFAULT_GAME_OBJECT
-from rbgraphics.rbgraphicsobjects import RBGraphicCircle, RBGraphicRectangle, RBImage, RBTextGraphic
+from rbgraphics.rbgraphicsobjects import (RBAnimatedImage, RBGraphicCircle,
+                                          RBGraphicRectangle, RBImage,
+                                          RBTextGraphic)
 from rbphysics.rbcollisionobjects import RBBoundingBox, RBBoundingCircle
 
 
@@ -44,6 +46,53 @@ class RBSprite(RBGameObject):
         graphic = RBImage(img, pos, anchor="nw")
         collider = RBBoundingBox.fromGraphic(pos, graphic) if hasCollider else None
         super(RBSprite, self).__init__(pos, graphic, collider, behaviours, velocity, gameObjectType, solid)
+
+
+class RBAnimatedSprite(RBGameObject):
+
+    @classmethod
+    def fromSpriteSheet(cls, spriteSheet, pos, frameWidth, frameHeight,
+                        frameCount=None, columns=None, frameIndices=None,
+                        frameRate=10, loop=True, autoplay=True, margin=0,
+                        spacing=0, hasCollider=True, behaviours=None,
+                        velocity=None, gameObjectType=DEFAULT_GAME_OBJECT,
+                        solid=False):
+        graphic = RBAnimatedImage.fromSpriteSheet(
+            spriteSheet, pos, frameWidth, frameHeight, frameCount, columns,
+            frameIndices, frameRate, loop, autoplay, margin, spacing,
+            anchor="nw")
+        collider = RBBoundingBox.fromGraphic(pos, graphic) if hasCollider else None
+        sprite = cls.__new__(cls)
+        RBGameObject.__init__(sprite, pos, graphic, collider, behaviours,
+                              velocity, gameObjectType, solid)
+        return sprite
+
+    def __init__(self, frames, pos, frameRate=10, loop=True, autoplay=True,
+                 hasCollider=True, behaviours=None, velocity=None,
+                 gameObjectType=DEFAULT_GAME_OBJECT, solid=False):
+        graphic = RBAnimatedImage(frames, pos, frameRate, loop, autoplay,
+                                  anchor="nw")
+        collider = RBBoundingBox.fromGraphic(pos, graphic) if hasCollider else None
+        super(RBAnimatedSprite, self).__init__(
+            pos, graphic, collider, behaviours, velocity, gameObjectType, solid)
+
+    def onUpdate(self, deltaTime):
+        self._graphic.update(deltaTime)
+
+    def play(self):
+        self._graphic.play()
+
+    def pause(self):
+        self._graphic.pause()
+
+    def stop(self):
+        self._graphic.stop()
+
+    def isPlaying(self):
+        return self._graphic.isPlaying()
+
+    def getFrameIndex(self):
+        return self._graphic.frameIndex
 
 
 class RBText(RBGameObject):
