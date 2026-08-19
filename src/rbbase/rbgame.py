@@ -18,15 +18,18 @@ class RBGame(object):
         self._graphics = None
         self._controller = None
         self._running = False
+        self._worlds = []
 
     def update(self):
         time.sleep(self._updateRate)
 
     def onUpdate(self, deltaTime):
-        pass
+        for world in self._worlds:
+            world.update(deltaTime)
 
     def onDraw(self):
-        pass
+        for world in self._worlds:
+            world.draw()
 
     def run(self):
         """Run the game loop until quit() is called or the window closes.
@@ -121,3 +124,9 @@ class RBGame(object):
 
     def initGraphics(self, width, height):
         self._graphics = RBGraphics(width, height)
+
+    def addWorld(self, world):
+        self._worlds.append(world)
+
+    def removeWorld(self, world):
+        self._worlds.remove(world)
