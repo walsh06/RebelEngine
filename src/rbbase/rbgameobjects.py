@@ -147,3 +147,34 @@ class RBUpdatingText(RBText):
         if updatedText != self.lastText:
             self.setText(updatedText)
             self.lastText = updatedText
+
+class RBProgressBar(RBGameObject):
+
+    def __init__(self, maxValue, pos, width, height, blocks=4, colour="green"):
+        self.background = RBGraphicRectangle(pos, width, height)
+        super(RBProgressBar, self).__init__(pos, self.background)
+        self.maxValue = maxValue
+        self.progress = 0
+        self.currentBlocks = 0
+        self.width = width
+        self.height = height
+        self.colour = colour
+        self.blocks = blocks
+        self.blockWidth = self.width/self.blocks
+        self.progressBar = RBGraphicRectangle(pos, 2, height, "black", colour)
+
+    def updateProgress(self, update):
+        self.progress += update
+
+    def setProgress(self, progress):
+        self.progress = progress
+
+    def draw(self, canvas):
+        blocks = int((self.progress/self.maxValue)*self.blocks)
+        if blocks != self.currentBlocks:
+            width = self.blockWidth * blocks
+            self.progressBar.undraw(canvas)
+            self.progressBar = RBGraphicRectangle(self.getPos(), width, self.height, "black", self.colour)
+            self.currentBlocks = blocks
+        super(RBProgressBar, self).draw(canvas)
+        self.progressBar.draw(canvas)
