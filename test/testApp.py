@@ -11,7 +11,7 @@ from rbbase.rbplayer import RBPlayer
 from rbgraphics.rbgraphicsobjects import RBImage, RBTextGraphic, RBGraphicRectangle
 from rbbase.rbgame import RBGame
 from rbbase.rbbase import RB2DPosition
-from rbai.rbbehaviour import RBMoveUp
+from rbai.rbbehaviour import RBSeek
 
 class TestGame(RBGame):
 
@@ -33,7 +33,7 @@ class TestGame(RBGame):
         self.testText = RBTextGraphic(self.count, RB2DPosition(100, 150))
 
         self.movingBlock = RBRectangle(RB2DPosition(50, 50), 20, 20, "blue", "blue")
-        self.movingBlock.addBehaviour(RBMoveUp(20))
+        self.movingBlock.addBehaviour(RBSeek(self.testPlayer, 40))
         self.world.addObject(self.movingBlock)
         self.world.addObject(self.testText)
         self.world.addObject(self.testImage)
