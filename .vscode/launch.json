@@ -6,12 +6,12 @@
     "configurations": [
 
         {
-            "name": "Test App",
+            "name": "Demo Game",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/test/testApp.py",
+            "program": "${workspaceFolder}/test/demos/demoGame.py",
             "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}/test"
+            "cwd": "${workspaceFolder}/test/demos"
         },
         
         {
@@ -21,6 +21,7 @@
             "program": "${workspaceFolder}/test/testGraphics.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}/test"
-        }
+        },
+
     ]
 }
