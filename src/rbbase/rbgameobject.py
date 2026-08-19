@@ -28,7 +28,7 @@ class RBGameObjectType(object):
 DEFAULT_GAME_OBJECT = RBGameObjectType(0, "Default")
 
 class RBGameObject(object):
-    def __init__(self, pos, graphic=None, collider=None, behaviours=None, velocity=None, gameObjectType=DEFAULT_GAME_OBJECT):
+    def __init__(self, pos, graphic=None, collider=None, behaviours=None, velocity=None, gameObjectType=DEFAULT_GAME_OBJECT, solid=False):
         self._pos = pos
         self._graphic = graphic
         self._collider = collider
@@ -37,6 +37,8 @@ class RBGameObject(object):
         self._remove = False
         self._gameObjectType = gameObjectType
         self._velocity = velocity
+        # Solid objects stop other objects during movement (walls, ground).
+        self._solid = solid
 
     @property
     def ObjectTypeId(self):
@@ -222,7 +224,19 @@ class RBGameObject(object):
         Get the collider of the game object.
         """
         return self._collider
-    
+
+    def isSolid(self):
+        """
+        Return True if this object blocks the movement of other objects.
+        """
+        return self._solid
+
+    def setSolid(self, solid):
+        """
+        Set whether this object blocks the movement of other objects.
+        """
+        self._solid = bool(solid)
+
     ## Hooks for subclasses to override
 
     def onUpdate(self, deltaTime):

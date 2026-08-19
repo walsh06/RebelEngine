@@ -68,17 +68,59 @@ class RBImage(RBGraphicObject):
 
 class RBTextGraphic(RBGraphicObject):
 
-    def __init__(self, text, pos):
+    def __init__(self, text, pos, colour="black", font_family="TkDefaultFont",
+                 font_size=10, font_weight="normal", anchor="center",
+                 justify="left", width=None):
         super(RBTextGraphic, self).__init__(pos)
-        self._id = None
         self._text = text
+        self._colour = colour
+        self._font_family = font_family
+        self._font_size = font_size
+        self._font_weight = font_weight
+        self._anchor = anchor
+        self._justify = justify
+        self._width = width
 
     def setText(self, text):
         self._text = text
         self._recreate = True
 
+    def setColour(self, colour):
+        self._colour = colour
+        self._recreate = True
+
+    def setFont(self, family=None, size=None, weight=None):
+        if family is not None:
+            self._font_family = family
+        if size is not None:
+            self._font_size = size
+        if weight is not None:
+            self._font_weight = weight
+        self._recreate = True
+
+    def setAnchor(self, anchor):
+        self._anchor = anchor
+        self._recreate = True
+
+    def setJustify(self, justify):
+        self._justify = justify
+        self._recreate = True
+
+    def setWidth(self, width):
+        self._width = width
+        self._recreate = True
+
     def create(self, canvas, x, y):
-        return canvas.create_text(x, y, {"text": self._text})
+        options = {
+            "text": self._text,
+            "fill": self._colour,
+            "font": (self._font_family, self._font_size, self._font_weight),
+            "anchor": self._anchor,
+            "justify": self._justify,
+        }
+        if self._width is not None:
+            options["width"] = self._width
+        return canvas.create_text(x, y, **options)
 
 class RBGraphicsShape(RBGraphicObject):
     
@@ -101,6 +143,10 @@ class RBGraphicCircle(RBGraphicsShape):
         super(RBGraphicCircle, self).__init__(centre, colour, fill)
         self._radius = radius
 
+    @property
+    def radius(self):
+        return self._radius
+
     def create(self, canvas, x, y):
         x1 = self._pos.getX() - self._radius
         y1 = self._pos.getY() - self._radius
@@ -117,6 +163,14 @@ class RBGraphicRectangle(RBGraphicsShape):
         super(RBGraphicRectangle, self).__init__(pos, colour, fill)
         self._height = height
         self._width = width
+
+    @property
+    def width(self):
+        return self._width
+
+    @property
+    def height(self):
+        return self._height
 
     def create(self, canvas, x, y):
         x1 = self._pos.getX()
