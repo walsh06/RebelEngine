@@ -23,6 +23,7 @@ class RBRectangle(RBGameObject):
     def setFill(self, fill):
         self._graphic.setFill(fill)
 
+
 class RBCircle(RBGameObject):
     
     def __init__(self, centre, radius, colour="black", fill="", hasCollider=True,behaviours=None, gameObjectType=DEFAULT_GAME_OBJECT, solid=False):
@@ -43,6 +44,7 @@ class RBSprite(RBGameObject):
         graphic = RBImage(img, pos, anchor="nw")
         collider = RBBoundingBox.fromGraphic(pos, graphic) if hasCollider else None
         super(RBSprite, self).__init__(pos, graphic, collider, behaviours, velocity, gameObjectType, solid)
+
 
 class RBText(RBGameObject):
 
@@ -72,6 +74,11 @@ class RBTimer(RBText):
 
     def reset(self):
         self.timer = 0
+
+    @property
+    def time(self):
+        return self.timer
+
 
 class RBUpdatingText(RBText):
     """
