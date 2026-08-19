@@ -97,12 +97,29 @@ class RBAnimatedSprite(RBGameObject):
 
 class RBText(RBGameObject):
 
-    def __init__(self, text, pos, behaviours=None, velocity=None, gameObjectType=DEFAULT_GAME_OBJECT):
-        graphic = RBTextGraphic(text, pos)
+    def __init__(self, text, pos,  colour="black", font_family="TkDefaultFont",
+                 font_size=10, font_weight="normal", anchor="center",
+                 justify="left", width=None, behaviours=None, velocity=None, gameObjectType=DEFAULT_GAME_OBJECT):
+        graphic = RBTextGraphic(text, pos, colour, font_family, font_size, font_weight, anchor, justify, width)
         super(RBText, self).__init__(pos, graphic, None, behaviours, velocity, gameObjectType)
 
     def setText(self, text):
         self._graphic.setText(text)
+
+    def setColour(self, colour):
+        self._graphic.setColour(colour)
+
+    def setFont(self, family=None, size=None, weight=None):
+        self._graphic.setFont(family, size, weight)
+
+    def setAnchor(self, anchor):
+        self._graphic.setAnchror(anchor)
+
+    def setJustify(self, justify):
+        self._graphic.setJustify(justify)
+
+    def setWidth(self, width):
+        self._graphic.setWidth(width)
 
 
 class RBTimer(RBText):
