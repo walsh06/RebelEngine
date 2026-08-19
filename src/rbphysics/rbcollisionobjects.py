@@ -4,6 +4,17 @@ class RBCollisionObject(object):
 
 class RBBoundingBox(RBCollisionObject):
 
+    @classmethod
+    def fromGraphic(cls, pos, graphic):
+        """Build a bounding box matching a graphic's extent (width/height or radius)."""
+        if hasattr(graphic, "width") and hasattr(graphic, "height"):
+            return cls(pos, graphic.width, graphic.height)
+        radius = getattr(graphic, "radius", None)
+        if radius is not None:
+            return cls(pos, radius * 2, radius * 2)
+        raise TypeError("Cannot derive a bounding box from graphic; "
+                        "pass an explicit collider")
+
     def __init__(self, pos, w, h):
         self._w = 0
         self._h = 0
