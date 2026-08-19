@@ -23,13 +23,5 @@
             "cwd": "${workspaceFolder}/test"
         },
 
-        {
-            "name": "Run Game",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${workspaceFolder}/Game/game.py",
-            "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}/Game"
-        }
     ]
 }
